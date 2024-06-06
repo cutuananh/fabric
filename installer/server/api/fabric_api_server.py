@@ -228,8 +228,7 @@ def register():
     }
 
     users[username] = new_user
-    j = jwt.JWT()
-    token = j.encode(payload=data, alg="HS256")
+    token = jwt.encode({"username": username}, os.getenv("JWT_SECRET"), algorithm="HS256")
 
     return jsonify({"token": token.decode("utf-8")})
 
@@ -243,8 +242,7 @@ def login():
 
     if username in users and users[username]["password"] == password:
         # Generate a JWT token
-        j = jwt.JWT()
-        token = j.encode(payload=data, alg="HS256")
+        token = jwt.encode({"username": username}, os.getenv("JWT_SECRET"), algorithm="HS256")
 
         return jsonify({"token": token.decode("utf-8")})
 
